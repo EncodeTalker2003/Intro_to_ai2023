@@ -1,0 +1,159 @@
+\documentclass[11pt]{article}
+
+\usepackage{amsmath, amsthm, amssymb, bm, color, framed, graphicx, mathrsfs, siunitx, enumerate,tikz}
+\usepackage{fancyhdr}
+\usepackage[margin=1in]{geometry}
+\usepackage[colorlinks]{hyperref}
+
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{CTEX}
+\usepackage[ruled,linesnumbered]{algorithm2e}
+
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\F}{{\mathbb{F}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+
+\newcommand{\ket}[1]{|{#1}\rangle}
+\newcommand{\bra}[1]{\langle{#1}|}
+\newcommand{\braket}[2]{\<{#1}|{#2}\>}
+\newcommand{\norm}[1]{\|{#1}\|}
+\newcommand{\Norm}[1]{\left\|{#1}\right\|}
+\newcommand{\red}[1]{{\color{red}#1}}
+
+\newcommand{\eq}[1]{(\ref{eq:#1})}
+\renewcommand{\sec}[1]{Section~\ref{sec:#1}}
+
+\definecolor{shadecolor}{RGB}{241, 241, 255}
+\newcounter{problemname}
+\newenvironment{problem}{\begin{shaded}\stepcounter{problemname}\par\noindent\textbf{题目\arabic{problemname}. }}{\end{shaded}\par}
+\newenvironment{solution}{\par\noindent\textbf{解答. }}{\par}
+\newenvironment{note}{\par\noindent\textbf{题目\arabic{problemname}的注记. }}{\par}
+
+\renewcommand{\P}{\mathbf{P}}
+\renewcommand{\d}{\mathrm{d}}
+\newcommand{\E}{\mathbf{E}}
+\newcommand{\var}{\mathrm{var}}
+\newcommand{\cov}{\mathrm{cov}}
+\newcommand{\ol}{\overline}
+
+\pagestyle{fancy}
+\fancyhead[LO,L]{周子锐 2100011032}
+\fancyhead[CO,C]{人工智能引论\ 第三次作业}
+\fancyhead[RO,R]{\today}
+\fancyfoot[LO,L]{}
+\fancyfoot[CO,C]{\thepage}
+\fancyfoot[RO,R]{}
+\linespread{1.5}
+\begin{document}
+	
+	\title{\textbf{人工智能引论\ 第三次作业}}
+	\author{周子锐 2100011032}
+	\date{\today}
+	\maketitle
+
+	\section{}
+
+	\begin{solution}
+		平方损失函数为 $$L(f(x_i), y_i) = (f(x_i)-y_i)^2.$$
+
+		在本题中, $f(x)=wx+b$, 需要最小化的函数为 $$J(w,b)=\frac{1}{n}\sum_{i=1}^nL(f(x_i),y_i)=\frac{1}{3}\left[(b-1)^2+(2w+b-1)^2+(3w+b-4)^2\right]$$
+
+		求偏导得 $$\frac{\partial J}{\partial w}=\frac{1}{3}[4(2w+b-1)+6(3w+b-4)]=\frac{1}{3}(26w+10b-28)$$ $$\frac{\partial J}{\partial b}=\frac{1}{3}[2(b-1)+2(2w+b-1)+2(3w+b-4)]=\frac{2}{3}(5w+3b-6)$$
+
+		令偏导数为$0$得到 $$w=\frac{6}{7},\quad b=\frac{4}{7}$$
+
+		由于$J$的最小值一定存在, 故上面求出的即为使$J$最小的$w$和$b$.
+
+		各数据点和回归曲线的示意图如下:
+		\begin{figure}[htbp]
+			\centering
+			\includegraphics[width=0.42\textwidth]{p1.png}
+			\label{fig:hw4-1}
+		\end{figure}
+	\end{solution}
+
+	\section{}
+	\begin{solution}
+		\begin{enumerate}[(1)]
+			\item $P(y=1|x=x_i)=\sigma(f(x_i))=\sigma(w^\top x_i+b)$
+			
+			$P(y=0|x=x_i)=1-P(y=1|x=x_i)=1-\sigma(w^\top x_i+b)=\sigma(-(w^\top x_i+b))$.
+
+			\item 最大似然估计要求最大化下式的值: $$\begin{aligned} 
+				\prod_{i=1}^n P(y=y_i|x=x_i)=&\prod_{i=1}^n P(y=1|x=x_i)^{y_i} (y=0|x=x_i)^{1-y_i}\\
+				=&\prod_{i=1}^n\sigma(w^\top x_i+b)^{y_i}\sigma(-(w^\top x_i+b))^{1-y_i}
+			\end{aligned}$$
+
+			对其取对数得到对数似然函数
+			$$\begin{aligned}
+				L(w,b)=&\sum_{i=1}^n y_i\log\sigma(w^\top x_i+b)+(1-y_i)\log\sigma(-(w^\top x_i+b))\\
+				=&-\sum_{i=1}^n\left(y_i\log(1+\exp(-w^\top x_i-b))+(1-y_i)\log(1+\exp(w^\top x_i+b))\right)
+			\end{aligned}$$
+		\end{enumerate}
+	\end{solution}
+
+	\section{}
+	\begin{solution}
+		\begin{enumerate}[(1)]
+			\item 下用$\log$指代以$2$为底的对数.
+			
+			记集合$D$为全集, 属性$A$的可能取值为$\{0,1\}$. 
+			
+			集合$D$的熵为$H(D)=-\left(\frac{1}{3}\log\frac{1}{3}+\frac{2}{3}\log\frac{2}{3}\right)=-\frac{2}{3}+\log 3$.
+
+			集合$D^{A=0}$的熵为$H(D^{A=0})=0$.
+
+			集合$D^{A=1}$的熵为$H(D^{A=1})=1$.
+
+			属性$A$对集合$D$的增益$g(D,A)=H(D)-\sum_i \frac{|D^{A=a_i}|}{|D|}H(D^{A=a_i})=-\frac{2}{3}+\log 3-\left(\frac{1}{3}\cdot 0+\frac{2}{3}\cdot 1\right)=-\frac{4}{3}+\log 3$
+
+			集合$D$上属性$A$的熵$H_A(D)=-\left(\frac{1}{3}\log\frac{1}{3}+\frac{2}{3}\log\frac{2}{3}\right)=-\frac{2}{3}+\log 3$.
+
+			综上, 属性$A$的增益率为$g(D,A)=\frac{g(D,A)}{H_A(D)}=\frac{-\frac{4}{3}+\log 3}{-\frac{2}{3}+\log 3}=\frac{-4+3\log 3}{-2+3\log 3}\approx 0.274$
+
+			\item 分类树如下所示
+			\newpage
+			
+			\begin{figure}[htbp]
+				\centering
+				\includegraphics[width=0.8\textwidth]{p2.jpg}
+				\label{fig:hw4-3}
+			\end{figure}
+
+			其中在各节点处标注了当前待分类的集合和分类所使用的属性. 在叶子节点的集合下方还标注了每个数据的标签.
+
+			对于数据点$x_*=[1,1,1]$, 其最终落到分类树上的最右侧的节点. 由于该节点中标签为$-1$的节点数量多于为$1$的节点数量, 故该数据点的分类结果为$-1$.
+		\end{enumerate}
+	\end{solution}
+
+	\section{}
+	\begin{solution}
+		\begin{enumerate}[(1)]
+			\item 首先求$\frac{\partial a_i}{\partial z_j}$.
+			
+			\begin{itemize}
+				\item $i=j$时, $$\frac{\partial a_i}{\partial z_i}=\frac{e^{z_i}(\sum_j e^{z_j})-(e^{z_i})^2}{(\sum_j e^{z_j})^2}=a_i-a_i^2.$$
+				\item $i\neq j$时, $$\frac{\partial a_i}{\partial z_j}=\frac{0-e^{z_i}e^{z_j}}{(\sum_j e^{z_j})^2}=-a_ia_j.$$
+			\end{itemize}
+
+			故$\frac{\partial L}{\partial z}=\left(\frac{\partial L}{\partial z_1},\cdots,\frac{\partial L}{\partial z_n}\right)^\top$, 其中 $$\frac{\partial L}{\partial z_j}=\sum_{i=1}^n \frac{\partial L}{\partial a_i}\frac{\partial a_i}{\partial z_j}=a_j\left(\frac{\partial L}{\partial a_j}-\sum_{i=1}^n \frac{\partial L}{\partial a_i}a_i\right).$$
+
+			\item 记上一问的$a_i$为$b_i$, 则在这里有$a_i=\ln b_i$, 从而
+			
+			$$\frac{\partial a_i}{\partial z_j}=\frac{\partial a_i}{\partial b_i}\frac{\partial b_i}{\partial z_j}=\frac{1}{b_i}\frac{\partial b_i}{\partial z_j}.$$
+
+			利用上一问的结果求$\frac{\partial a_i}{\partial z_j}$.
+
+			\begin{itemize}
+				\item $i=j$时, $$\frac{\partial a_i}{\partial z_i}=\frac{1}{b_i}b_i-b_i^2=1-b_i=1-e^{a_i}.$$
+				\item $i\neq j$时, $$\frac{\partial a_i}{\partial z_j}=-\frac{1}{b_i}\cdot b_ib_j=-b_j=-e^{a_j}.$$
+			\end{itemize}
+
+			故$\frac{\partial L}{\partial z}=\left(\frac{\partial L}{\partial z_1},\cdots,\frac{\partial L}{\partial z_n}\right)^\top$, 其中 $$\frac{\partial L}{\partial z_j}=\sum_{i=1}^n \frac{\partial L}{\partial a_i}\frac{\partial a_i}{\partial z_j}=\frac{\partial L}{\partial a_j}-\sum_{i=1}^n \frac{\partial L}{\partial a_i}e^{a_i}.$$
+			
+		\end{enumerate}
+	\end{solution}
+\end{document}

@@ -1,0 +1,164 @@
+\documentclass[11pt]{article}
+
+\usepackage{amsmath, amsthm, amssymb, bm, color, framed, graphicx, mathrsfs, siunitx, enumerate,tikz}
+\usepackage{fancyhdr}
+\usepackage[margin=1in]{geometry}
+\usepackage[colorlinks]{hyperref}
+
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{CTEX}
+\usepackage[ruled,linesnumbered]{algorithm2e}
+
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\F}{{\mathbb{F}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+
+\newcommand{\ket}[1]{|{#1}\rangle}
+\newcommand{\bra}[1]{\langle{#1}|}
+\newcommand{\braket}[2]{\<{#1}|{#2}\>}
+\newcommand{\norm}[1]{\|{#1}\|}
+\newcommand{\Norm}[1]{\left\|{#1}\right\|}
+\newcommand{\red}[1]{{\color{red}#1}}
+
+\newcommand{\eq}[1]{(\ref{eq:#1})}
+\renewcommand{\sec}[1]{Section~\ref{sec:#1}}
+
+\definecolor{shadecolor}{RGB}{241, 241, 255}
+\newcounter{problemname}
+\newenvironment{problem}{\begin{shaded}\stepcounter{problemname}\par\noindent\textbf{题目\arabic{problemname}. }}{\end{shaded}\par}
+\newenvironment{solution}{\par\noindent\textbf{解答. }}{\par}
+\newenvironment{note}{\par\noindent\textbf{题目\arabic{problemname}的注记. }}{\par}
+
+\renewcommand{\P}{\mathbf{P}}
+\renewcommand{\d}{\mathrm{d}}
+\newcommand{\E}{\mathbf{E}}
+\newcommand{\var}{\mathrm{var}}
+\newcommand{\cov}{\mathrm{cov}}
+\newcommand{\ol}{\overline}
+
+\pagestyle{fancy}
+\fancyhead[LO,L]{周子锐 2100011032}
+\fancyhead[CO,C]{人工智能引论\ 第四次作业}
+\fancyhead[RO,R]{\today}
+\fancyfoot[LO,L]{}
+\fancyfoot[CO,C]{\thepage}
+\fancyfoot[RO,R]{}
+\linespread{1.5}
+\begin{document}
+	
+	\title{\textbf{人工智能引论\ 第四次作业}}
+	\author{周子锐 2100011032}
+	\date{\today}
+	\maketitle
+
+	\section{}
+	\begin{solution}
+		\begin{enumerate}[(1)]
+			\item $$w\begin{bmatrix}
+				u \\ v \\ 1
+			\end{bmatrix}=K\begin{bmatrix}
+				R & T
+			\end{bmatrix}\begin{bmatrix}
+				P_w \\ 1
+			\end{bmatrix}=\begin{bmatrix}
+				8 & 0 & 6 \\ 0 & 5 & 4 \\ 0 & 0 & 1
+			\end{bmatrix}\begin{bmatrix}
+				0 & -1 & 0 & 1 \\ -1 & 0 & 0 & 0 \\ 0 & 0 & 1 & 2
+			\end{bmatrix}\begin{bmatrix}
+				4 \\ 6 \\ 8 \\ 1
+			\end{bmatrix}$$
+	
+			计算得$$w=10,(u,v)=(2,2)$$
+	
+			\item 设$P_w=(x,y,z)^\top$, 则有
+			$$K_i\begin{bmatrix}
+				R_i & T_i
+			\end{bmatrix}\begin{bmatrix}
+				x \\ y \\ z \\ 1
+			\end{bmatrix}=w_i\begin{bmatrix}
+				u_i \\ v_i \\ 1
+			\end{bmatrix},\quad i=1,2$$
+	
+			此方程组有$5$个未知数$x,y,z,w_1,w_2$和$6$个方程, 故可以解出唯一解, 解得 $$P_w=(4,6,8)^\top.$$
+		\end{enumerate}
+	\end{solution}
+	
+	\section{}
+	\begin{solution}
+		绕$x$轴顺时针旋转$\alpha$角的旋转矩阵为: $$R_\alpha=\begin{bmatrix}
+			1 & 0 & 0 \\ 0 & \cos\alpha & \sin\alpha \\ 0 & -\sin\alpha & \cos\alpha
+		\end{bmatrix}.$$
+		绕$y$轴顺时针旋转$\gamma$角的旋转矩阵为: $$R_\gamma=\begin{bmatrix}
+			\cos\gamma & 0 & -\sin\gamma \\ 0 & 1 & 0 \\ \sin\gamma & 0 & \cos\gamma \end{bmatrix}.$$
+		绕$z$轴顺时针旋转$\beta$角的旋转矩阵为: $$R_\beta=\begin{bmatrix}
+			\cos\beta & \sin\beta & 0 \\ -\sin\beta & \cos\beta & 0 \\ 0 & 0 & 1 \end{bmatrix}.$$
+		故最终的旋转矩阵为: $$R=R_\beta R_\gamma R_\alpha=\begin{bmatrix}
+			\cos\beta\cos\gamma & \cos\alpha\cos\beta+\sin\alpha\cos\beta\sin\gamma & \sin\alpha\sin\beta-\cos\alpha\cos\beta\sin\gamma \\
+			-\sin\beta\cos\gamma & \cos\alpha\cos\beta-\sin\alpha\sin\beta\sin\gamma & \sin\alpha\cos\beta+\cos\alpha\sin\beta\sin\gamma \\
+			\sin\gamma & -\sin\alpha\cos\gamma & \cos\alpha\cos\gamma
+		\end{bmatrix}$$
+	\end{solution}
+	
+	\section{}
+	\begin{solution}
+		使用CYK算法分析得到(其中\textbackslash 表示空集)
+		\begin{table}[htbp]
+			\begin{tabular}{ccccccc}
+			\cline{1-1}
+			\multicolumn{1}{|c|}{S}                &                                       &                                       &                                       &                                       &                         &                        \\ \cline{1-2}
+			\multicolumn{1}{|c|}{\textbackslash{}} & \multicolumn{1}{c|}{VP}               &                                       &                                       &                                       &                         &                        \\ \cline{1-3}
+			\multicolumn{1}{|c|}{\textbackslash{}} & \multicolumn{1}{c|}{\textbackslash{}} & \multicolumn{1}{c|}{NP}               &                                       &                                       &                         &                        \\ \cline{1-4}
+			\multicolumn{1}{|c|}{S}                & \multicolumn{1}{c|}{\textbackslash{}} & \multicolumn{1}{c|}{\textbackslash{}} & \multicolumn{1}{c|}{\textbackslash{}} &                                       &                         &                        \\ \cline{1-5}
+			\multicolumn{1}{|c|}{\textbackslash{}} & \multicolumn{1}{c|}{VP}               & \multicolumn{1}{c|}{\textbackslash{}} & \multicolumn{1}{c|}{\textbackslash{}} & \multicolumn{1}{c|}{PP}               &                         &                        \\ \cline{1-6}
+			\multicolumn{1}{|c|}{\textbackslash{}} & \multicolumn{1}{c|}{\textbackslash{}} & \multicolumn{1}{c|}{NP}               & \multicolumn{1}{c|}{\textbackslash{}} & \multicolumn{1}{c|}{\textbackslash{}} & \multicolumn{1}{c|}{NP} &                        \\ \hline
+			\multicolumn{1}{|c|}{NP}               & \multicolumn{1}{c|}{V}                & \multicolumn{1}{c|}{D}                & \multicolumn{1}{c|}{N}                & \multicolumn{1}{c|}{P}                & \multicolumn{1}{c|}{D}  & \multicolumn{1}{c|}{N} \\ \hline
+			i                                      & saw                                   & the                                   & boy                                   & with                                  & a                       & telescope             
+			\end{tabular}
+		\end{table}
+		
+		因此该句子满足上述语法.
+	\end{solution}
+
+	\section{}
+	\begin{solution}
+		若使用FFNN模型:
+		\begin{enumerate}[(1)]
+			\item 该系统的输入为若干影评文本, 输出为预测的星级评定($1\sim 5$星).
+			
+			对输入输出的表示: 表示输入可以将影评文本进行分词, 然后将得到的token映射到一个固定大小的向量(如$300$维), 这个映射可以使用预先训练的模型(如word2vec). 这样的话输入就可以表示成$1000$个$300$维的向量. 表示输出则设置神经网络的输出层为$5$个神经元, 分别对应$1\sim 5$星的概率分布. 使用softmax将输出转化为对应的概率.
+
+			\item 该网络由若干全连接层表示. 输入层为$1000\times 300=300000$个神经元, 输出层为$5$个神经元. 中间设置若干隐藏层, 一种可行的方式为
+			\begin{center}
+				\centering
+				[输入层($300000$个神经元)]->[隐藏层1($1024$个神经元)]->[隐藏层2($128$个神经元)]->[输出层($5$个神经元)]
+			\end{center}
+
+			其中激活函数使用ReLU函数, 需要训练的参数(除了预处理的word2vec)包含各全连接层的权重和偏置.
+
+			\item 首先从影评网站上收集若干影评文本和对应的评级, 按照一定的比例(如$5:1$)划分训练集和验证集. 
+			
+			训练方法采用监督学习, 以最小化在训练集上的多分类交叉熵损失函数目标. 完成训练后结合在验证集上的表现进行调参.
+
+			\item 推理过程: 将待预测的影评文本根据对输入的处理转化成向量, 随后输入到训练好的FFNN模型中, 得到输出的概率分布, 选取概率最大的星级评定作为预测结果.
+		\end{enumerate}
+
+		若使用RNN/Transformer模型:
+		\begin{enumerate}[(1)]
+			\item 该系统的输入为若干影评文本, 输出为预测的星级评定($1\sim 5$星).
+			
+			对输入输出的表示: 表示输入可以将影评文本进行分词, 然后使用one-hot编码表示每一个单词. 由于语料库中有$50000$哥单词, 故每条影评对应$1000$个$50000$维的向量. 表示输出则设置神经网络的输出层为$5$个神经元, 分别对应$1\sim 5$星的概率分布. 使用softmax将输出转化为对应的概率.
+
+			\item 该网络为RNN, 假设隐状态为一个$256$维的向量, 那么网络结构如下: 
+			\begin{center}
+				\centering
+				[输入层($50000$个神经元)]->[RNN层($256$个神经元)]->[输出层($5$个神经元)]
+			\end{center}
+			需要训练的参数为RNN层的权重和偏置和RNN层到输出层的权重和偏置.
+
+			训练方法和推理过程同FFNN模型. 注意RNN的记忆性较弱, 如若效果不佳则可以使用LSTM或者Transformer模型.
+		\end{enumerate}
+	\end{solution}
+\end{document}

@@ -1,0 +1,103 @@
+\documentclass[11pt]{article}
+
+\usepackage{amsmath, amsthm, amssymb, bm, color, framed, graphicx, mathrsfs, siunitx, enumerate,tikz}
+\usepackage{fancyhdr}
+\usepackage[margin=1in]{geometry}
+\usepackage[colorlinks]{hyperref}
+
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{CTEX}
+
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\F}{{\mathbb{F}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+
+\newcommand{\ket}[1]{|{#1}\rangle}
+\newcommand{\bra}[1]{\langle{#1}|}
+\newcommand{\braket}[2]{\<{#1}|{#2}\>}
+\newcommand{\norm}[1]{\|{#1}\|}
+\newcommand{\Norm}[1]{\left\|{#1}\right\|}
+\newcommand{\red}[1]{{\color{red}#1}}
+
+\newcommand{\eq}[1]{(\ref{eq:#1})}
+\renewcommand{\sec}[1]{Section~\ref{sec:#1}}
+
+\definecolor{shadecolor}{RGB}{241, 241, 255}
+\newcounter{problemname}
+\newenvironment{problem}{\begin{shaded}\stepcounter{problemname}\par\noindent\textbf{题目\arabic{problemname}. }}{\end{shaded}\par}
+\newenvironment{solution}{\par\noindent\textbf{解答. }}{\par}
+\newenvironment{note}{\par\noindent\textbf{题目\arabic{problemname}的注记. }}{\par}
+
+\renewcommand{\P}{\mathbf{P}}
+\renewcommand{\d}{\mathrm{d}}
+\newcommand{\E}{\mathbf{E}}
+\newcommand{\var}{\mathrm{var}}
+\newcommand{\cov}{\mathrm{cov}}
+\newcommand{\ol}{\overline}
+
+
+\pagestyle{fancy}
+\fancyhead[LO,L]{周子锐 2100011032}
+\fancyhead[CO,C]{人工智能引论\ 第二次作业}
+\fancyhead[RO,R]{\today}
+\fancyfoot[LO,L]{}
+\fancyfoot[CO,C]{\thepage}
+\fancyfoot[RO,R]{}
+\linespread{1.5}
+
+\newcommand{\co}{\mathrm{color}}
+\newcommand{\ex}{\mathrm{explored}}
+\begin{document}
+	
+	\title{\textbf{人工智能引论\ 第二次作业}}
+	\author{周子锐 2100011032}
+	\date{\today}
+	\maketitle
+
+	\section{图着色问题}
+	\begin{solution}
+
+	\end{solution}
+	\begin{enumerate}[(1)]
+		\item 对于节点$p$, 它被着色了可使用下面的逻辑表达式表示: $$\co_{p1}\vee\co_{p2}\vee\cdots\vee\co_{pK}.$$
+		
+		故所有节点被染色可被表示为: $$\bigwedge_{p=1}^{|V|} (\co_{p1}\vee\co_{p2}\vee\cdots\vee\co_{pK}).$$
+
+		\item 对于节点$p$, 其至多被一种颜色染色可用如下的CNF表示: $$\bigwedge_{1\leq i<j\leq K}(\neg\co_{pi}\vee\neg\co_{pj}).$$
+		
+		故所有节点至多被一种颜色染色可被表示为: $$\bigwedge_{p=1}^{|V|}\bigwedge_{1\leq i<j\leq K}(\neg\co_{pi}\vee\neg\co_{pj}).$$
+
+		\item 对于一条边$e=(u,v)\in E$, 这两个节点没有被染相同颜色可用CNF表示为 $$\bigwedge_{k=1}^K (\neg\co_{u,k}\vee\neg\co_{v,k}).$$
+		
+		故对于所有边其两端的点的颜色不同可表示为 $$\bigwedge_{(u,v)\in E}\bigwedge_{i=1}^K (\neg\co_{ui}\vee\neg\co_{vi}).$$
+
+		\item 注意到我们上面的三问中得到的最后结果均为CNF形式, 故而将其综合起来就能得到最后的结果. $$\begin{aligned}
+			\left(\bigwedge_{p=1}^{|V|} (\co_{p1}\vee\co_{p2}\vee\cdots\vee\co_{pK})\right)\bigwedge\left( \bigwedge_{p=1}^{|V|}\bigwedge_{1\leq i<j\leq K}(\neg\co_{pi}\vee\neg\co_{pj})\right) \\
+			\bigwedge \left(\bigwedge_{(u,v)\in E}\bigwedge_{i=1}^K (\neg\co_{ui}\vee\neg\co_{vi})\right)
+		\end{aligned}$$
+	\end{enumerate}
+
+	\section{最短路径: UCS}
+	\begin{solution}
+		用$q$来表示优先队列, 优先队列中的元素均形如$(\mathrm{state},\mathrm{path}, \mathrm{cost})$, 表示当前的状态,到达该点的路径和到达该状态的最小花费, 其中$\mathrm{cost}$越小的越先出队列. 用$\ex$表示已经访问过的状态.
+
+		下面是在该图中使用UCS算法的过程:
+		\begin{itemize}
+			\item 初始时$q=\{(S,0)\},\ex=\{\}$.
+			\item 从队列中取出$S$并扩展, 得到$q=\{(C,S\to C,4),(A,S\to A,2)\},\ex=\{S\}$.
+			\item 从队列中取出$A$并扩展, 得到$q=\{(C,S\to C,4),(D,S\to A\to D, 7),(B,S\to A\to B,10)\},\ex=\{S,A\}$.
+			\item 从队列中取出$C$并扩展, 得到$q=\{(D,S\to C\to D,6),(B,S\to C\to B,6)\},\ex=\{S,A,C\}$.
+			\item 从队列中取出$B$并扩展, 得到$q=\{(D,S\to C\to D, 6),(T,S\to C\to B\to T,14)\},\ex=\{S,A,C,B\}$.
+			\item 从队列中取出$D$并扩展, 得到$q=\{(T,S\to C\to B\to T,14)\},\ex=\{S,A,C,B,D\}$.
+			\item 从队列中取出$T$并判断其为目标状态, 算法结束.
+		\end{itemize}
+
+		根据上述过程可以得到$S$到$T$的最短路径为$S\to C\to B\to T$, 花费为$14$. UCS的出队顺序为$S,A,C,B,D,T$.
+	\end{solution}
+
+	\section{SAT问题: CDCL}
+
+\end{document}

@@ -1,0 +1,163 @@
+\documentclass[11pt]{article}
+
+\usepackage{amsmath, amsthm, amssymb, bm, color, framed, graphicx, mathrsfs, siunitx, enumerate,tikz}
+\usepackage{fancyhdr}
+\usepackage[margin=1in]{geometry}
+\usepackage[colorlinks]{hyperref}
+
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{CTEX}
+\usepackage[ruled,linesnumbered]{algorithm2e}
+
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\F}{{\mathbb{F}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+
+\newcommand{\ket}[1]{|{#1}\rangle}
+\newcommand{\bra}[1]{\langle{#1}|}
+\newcommand{\braket}[2]{\<{#1}|{#2}\>}
+\newcommand{\norm}[1]{\|{#1}\|}
+\newcommand{\Norm}[1]{\left\|{#1}\right\|}
+\newcommand{\red}[1]{{\color{red}#1}}
+
+\newcommand{\eq}[1]{(\ref{eq:#1})}
+\renewcommand{\sec}[1]{Section~\ref{sec:#1}}
+
+\definecolor{shadecolor}{RGB}{241, 241, 255}
+\newcounter{problemname}
+\newenvironment{problem}{\begin{shaded}\stepcounter{problemname}\par\noindent\textbf{题目\arabic{problemname}. }}{\end{shaded}\par}
+\newenvironment{solution}{\par\noindent\textbf{解答. }}{\par}
+\newenvironment{note}{\par\noindent\textbf{题目\arabic{problemname}的注记. }}{\par}
+
+\renewcommand{\P}{\mathbf{P}}
+\renewcommand{\d}{\mathrm{d}}
+\newcommand{\E}{\mathbf{E}}
+\newcommand{\var}{\mathrm{var}}
+\newcommand{\cov}{\mathrm{cov}}
+\newcommand{\ol}{\overline}
+
+\pagestyle{fancy}
+\fancyhead[LO,L]{周子锐 2100011032}
+\fancyhead[CO,C]{人工智能引论\ 第五次作业}
+\fancyhead[RO,R]{\today}
+\fancyfoot[LO,L]{}
+\fancyfoot[CO,C]{\thepage}
+\fancyfoot[RO,R]{}
+\linespread{1.5}
+\begin{document}
+	
+	\title{\textbf{人工智能引论\ 第五次作业}}
+	\author{周子锐 2100011032}
+	\date{\today}
+	\maketitle
+
+	\section{}
+	\begin{solution}
+		\begin{enumerate}[(1)]
+			\item 进行透视投影时:
+			\begin{itemize}
+				\item 对点$P_1=(0,1,0)$, 相机到此点的直线方程为$\bm{r}_1=(0,t,-1+t)$, 其与圆$y^2+(z-4)^2=2$不存在交点, 故而屏幕上$P_1$点的颜色为0.
+				\item 对点$P_2=(0,\frac{1}{4},0)$, 相机到此点的直线方程为$\bm{r}_2=(0,\frac{1}{4}t,-1+t)$. 其与圆的第一个交点为$Q_2(0,1,3)$. 圆在此点处的法线方向为$\bm{n}_2=(0,-1,1)$. 这与光源到此点的方向共线. 根据朗博余弦定理, 光源发出的光在此点都被接收到. 屏幕上的点$P_2$的颜色为$$ 0.8\cos 0 + 0.2=1.$$
+				\item 对点$P_3=(0,-\frac{1}{4},0)$, 相机到此点的直线方程为$\bm{r}_3=(0,-\frac{1}{4}t,-1+t)$, 其与圆的第一个交点为$Q_3(3,-1)$. 注意到光源到点$Q_3$的直线与圆在$Q_3$之前还有交点, 从而不存在反射光, 在屏幕上$P_3$的颜色为$0.2$.
+			\end{itemize}
+			\item 进行正交投影时:
+			\begin{itemize}
+				\item 对点$P_1$. 发出的射线与圆的交点恰好就是$Q_2$, 从而由上可知屏幕上$P_1$的颜色为$1$.
+				\item 对点$P_2$, 发出的射线与圆的交点为$Q_4(0,\frac{1}{4},4-\frac{\sqrt{31}}{4})$. 计算得到光源到$Q_3$的直线与该点法线的夹角为约为$\alpha_2\approx 42.60^\circ$, 从而屏幕上$P_2$的颜色为$$ 0.8\cos \alpha_2+ 0.2\approx 0.79.$$
+				\item 对点$P_3$, 发出的射线与圆的交点为$Q_5(0,-\frac{1}{4},4-\frac{\sqrt{31}}{4})$, 计算得到光源到$Q_5$的直线与该点法线的夹角为约为$\alpha_3\approx 65.68^\circ$, 从而屏幕上$P_3$的颜色为$$ 0.8\cos \alpha_3+ 0.2\approx 0.53.$$
+			\end{itemize}
+			
+		\end{enumerate}
+	\end{solution}
+
+	\section{}
+	\begin{solution}
+		\begin{enumerate}[(1)]
+			\item 对物体$i$, 它与物体$j$之间的弹簧力为$$\bm{F}_{ij}=-k_{ij}(\norm{\bm{r}_i-\bm{r}_j}-l_{ij})\frac{\bm{r}_i-\bm{r}_j}{\norm{\bm{r}_i-\bm{r}_j}}.$$
+			
+			在一维情况下有$$F_{ij}=k_{ij}\mathrm{sgn}(x_j-x_i)(|x_j-x_i|-l_{ij}).$$
+
+			从而在时刻$t$物体$i$的运动微分方程为 $$\begin{cases}
+				m\dot{v_i}=\sum\limits_{j\neq i}F_{ij}=\sum\limits_{j\neq i} k\cdot\mathrm{sgn}(x_j-x_i)(|x_j-x_i|-l_0) \\
+				\dot{x_i}=v_i	
+			\end{cases},\quad i=1,2,3$$
+
+			带入具体数据后得到该问题在$t=0$时的质点微分方程: $$\begin{cases}
+				\dot{v_1}=3 \\
+				\dot{v_2}=2 \\
+				\dot{v_3}=-5 \\
+				\dot{x_i}=v_i,\quad i=1,2,3
+			\end{cases}$$
+			\item 记$t=0$时物体$i$的状态参量为$x_i,v_i$; $t=1$时物体的状态参量为$x'_i,v'_i$.
+			
+			根据半隐式欧拉积分的公式有$$\begin{cases}
+				v'_i=v_i+f(x_i,v_i,t)\delta t \\
+				x'_i=x_i+v'_i\delta t
+			\end{cases},\quad i=1,2,3. $$
+			具体地, 带入(1)中结果, 并有$\delta t = h =1$. $$\begin{cases}
+				v_1'=v_1+3 \\
+				v_2'=v_2+2 \\
+				v_3'=v_3-5 \\
+				x_i'=x_i+v_i',\quad i=1,2,3
+			\end{cases}.$$
+			再带入初值得到 $$\begin{cases}
+				v_1'=3, x_1'=2 \\
+				v_2'=3, x_2'=3 \\
+				v_3'=-6, x_3'=-3
+			\end{cases}.$$
+			
+			\item 根据隐式欧拉积分公式的一般形式有$$\begin{cases}
+				\bm{v}'=\bm{v}+M^{-1}\bm{f}(\bm{x}',\bm{v}',t')\delta t \\
+				\bm{x}'=\bm{x}+\bm{v}'\delta t
+			\end{cases} $$ 其中$M$为主对角线上为$n$个物体的质量的对角矩阵.
+
+			对$\bm{f}$进行Taylor展开并略去高阶项有 $$\bm{f}'=\bm{f}+\frac{\partial\bm{f}}{\partial\bm{x}}\Delta\bm{x}+\frac{\partial\bm{f}}{\partial\bm{v}}\Delta\bm{v}.$$
+
+			将其带入到隐式欧拉积分的方程中有 $$\begin{cases}
+				\Delta\bm{v}= M^{-1}\delta t(\bm{f}+\frac{\partial\bm{f}}{\partial\bm{x}}\Delta\bm{x}+\frac{\partial\bm{f}}{\partial\bm{v}}\Delta\bm{v}) \\
+				\Delta\bm{x}=\delta t(\bm{v}+\Delta\bm{v})
+			\end{cases}.$$
+
+			带入消去$\Delta\bm{x}$有 $$\Delta v=M^{-1}\delta t(f+\frac{\partial\bm{f}}{\partial\bm{x}}(\delta t(\bm{v}+\Delta\bm{v}))+\frac{\partial\bm{f}}{\partial\bm{v}}\Delta\bm{v}).$$
+
+			整理得 $$\left(M-\frac{\partial\bm{f}}{\partial\bm{x}}(\delta t)^2-\frac{\partial\bm{f}}{\partial\bm{v}}\delta t\right)\Delta\bm{v}=\bm{f}\delta t+\frac{\partial\bm{f}}{\partial\bm{x}}\bm{v}(\delta t)^2.$$ 解此方程得到$\Delta\bm{v}$, 进而计算$\bm{v}',\bm{x}'$.
+
+			回到原问题, 注意到$f$仅是$x_1,\cdots,x_n$的函数, 从而方程简化为 $$\left(M-\frac{\partial\bm{f}}{\partial\bm{x}}(\delta t)^2\right)\Delta\bm{v}=\bm{f}\delta t+\frac{\partial\bm{f}}{\partial\bm{x}}\bm{v}(\delta t)^2.$$
+
+			进一步的, 由$f_i=\sum\limits_{j\neq i}k\cdot\mathrm{sgn}(x_j-x_i)(|x_j-x_i|-l_0)$得到:
+			\begin{itemize}
+				\item $i\neq j$时, $\frac{\partial f_i}{\partial x_j}=k$.
+				\item $i=j$时, $\frac{\partial f_i}{\partial x_i}=-(n-1)k$.
+			\end{itemize}
+			因此 $$\frac{\partial\bm{f}}{\partial\bm{x}}=\begin{bmatrix}
+				-(n-1)k & k & \cdots & k \\
+				k & -(n-1)k & \cdots & k \\
+				\vdots & \vdots & \ddots & \vdots \\
+				k & k & \cdots & -(n-1)k
+			\end{bmatrix}$$
+
+			带入具体数据后解方程得到 $$\Delta\bm{v}=\left(\frac{3}{4},-\frac{1}{4},-\frac{1}{2}\right)^\top. $$
+
+			从而 $$\bm{v}'=\left(\frac{3}{4},\frac{3}{4},-\frac{3}{2}\right)^\top,\bm{x}'=\left(-\frac{1}{4},\frac{3}{4},\frac{3}{2}\right)^\top.$$
+		\end{enumerate}
+	\end{solution}
+
+	\section{}
+	\begin{solution}
+		\begin{enumerate}[(1)]
+			\item 根据纯策略纳什均衡的定义知所有的符合条件的均衡点为(A:v,B:x)和(A:u,B:z).
+			\item 不存在纯纳什策略均衡.
+			记A的混合策略为$(p,1-p)^\top$, B的混合策略为$(q,1-q)^\top$.
+
+			对于B, 假设已知$p$, 那么A的最小收益为$\min(2p-3(1-p),-5p+3(1-p))=\min(5p-3,-8p+3)$, A为了使其最大, 有$p=\frac{6}{13}$.
+
+			对于A, 假设已知$q$, 那么A的最大收益为$\max(2q-5(1-q),-3q+3(1-q))=\max(7q-5,-6q+3)$, B为了使其最小有$q=\frac{8}{13}$.
+
+			从而混合策略纳什均衡为$(\frac{6}{13},\frac{7}{13})^\top$和$(\frac{8}{13},\frac{5}{13})^\top$. 此时A的收益为$-\frac{9}{13}$.
+		\end{enumerate}
+	\end{solution}
+
+\end{document}

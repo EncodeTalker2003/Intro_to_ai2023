@@ -1,0 +1,158 @@
+\documentclass[11pt]{article}
+
+\usepackage{amsmath, amsthm, amssymb, bm, color, framed, graphicx, mathrsfs, siunitx, enumerate,tikz}
+\usepackage{fancyhdr}
+\usepackage[margin=1in]{geometry}
+\usepackage[colorlinks]{hyperref}
+
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{CTEX}
+
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\F}{{\mathbb{F}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+
+\newcommand{\ket}[1]{|{#1}\rangle}
+\newcommand{\bra}[1]{\langle{#1}|}
+\newcommand{\braket}[2]{\<{#1}|{#2}\>}
+\newcommand{\norm}[1]{\|{#1}\|}
+\newcommand{\Norm}[1]{\left\|{#1}\right\|}
+\newcommand{\red}[1]{{\color{red}#1}}
+
+\newcommand{\eq}[1]{(\ref{eq:#1})}
+\renewcommand{\sec}[1]{Section~\ref{sec:#1}}
+
+\definecolor{shadecolor}{RGB}{241, 241, 255}
+\newcounter{problemname}
+\newenvironment{problem}{\begin{shaded}\stepcounter{problemname}\par\noindent\textbf{题目\arabic{problemname}. }}{\end{shaded}\par}
+\newenvironment{solution}{\par\noindent\textbf{解答. }}{\par}
+\newenvironment{note}{\par\noindent\textbf{题目\arabic{problemname}的注记. }}{\par}
+
+\renewcommand{\P}{\mathbf{P}}
+\renewcommand{\d}{\mathrm{d}}
+\newcommand{\E}{\mathbf{E}}
+\newcommand{\var}{\mathrm{var}}
+\newcommand{\cov}{\mathrm{cov}}
+\newcommand{\ol}{\overline}
+
+\pagestyle{fancy}
+\fancyhead[LO,L]{周子锐 2100011032}
+\fancyhead[CO,C]{人工智能引论\ 第一次作业}
+\fancyhead[RO,R]{\today}
+\fancyfoot[LO,L]{}
+\fancyfoot[CO,C]{\thepage}
+\fancyfoot[RO,R]{}
+\linespread{1.5}
+\begin{document}
+	
+	\title{\textbf{人工智能引论\ 第一次作业}}
+	\author{周子锐 2100011032}
+	\date{\today}
+	\maketitle
+	
+	\section{Problem 1}
+	
+	\begin{solution}
+		记事件$A$为"选中的射手击中十环", 事件$B_i$为"这名射手来自第$i$组"($i=1,2,3,4$), 则根据全概率公式有$$P(A)=\sum_{i=1}^4 P(B_i)P(A|B_i)=\frac{4}{20}\times 0.9+\frac{6}{20}\times 0.8+\frac{7}{20}\times 0.5+\frac{3}{20}\times 0.3=0.64$$
+	\end{solution}
+
+	\section{Problem 2}
+	
+	\begin{solution}
+		记事件$A$为"此人是色盲", 事件$B$为"此人是男性". 则根据Bayes公式有
+		
+		$$\begin{aligned}
+			P(B|A)=&\frac{P(B)P(A|B)}{P(A)}\\
+			=& \frac{P(B)P(A|B)}{P(B)P(A|B)+P(\bar{B})P(A|\bar{B})} \\
+			=&\frac{0.5\times 0.04}{0.5\times 0.04+0.5\times 0.002} \\
+			=& \frac{20}{21}
+		\end{aligned}$$
+	\end{solution}
+	
+	\section{Problem 3}
+	\begin{solution}
+		\begin{enumerate}[(1)]
+			\item 记事件$A_i$为"第$i$次作业合格"($i=1,2$),则$$P(A_1A_2)=1-P(\ol{A_1}\ol{A_2})=1-P(\ol{A_1})P(\ol{A_2}|\ol{A_1})=1-(1-p)(1-\frac{p}{3})=\frac{4p-p^2}{3}$$
+			\item 根据Bayes公式有 $$\begin{aligned}
+				P(A_1|A_2)=&\frac{P(A_2|A_1)P(A_1)}{P(A_2)}\\
+				=&\frac{P(A_2|A_1)P(A_1)}{P(A_2|A_1)P(A_1)+P(A_2|\ol{A_1})P(\ol{A_1})}\\
+				=&\frac{p\cdot p}{p\cdot p+(1-p)\cdot \frac{p}{3}}\\
+				=&\frac{3p}{2p+1}
+			\end{aligned}$$
+		\end{enumerate}
+	\end{solution}
+
+	\section{Problem 4}
+	\begin{solution}
+		\begin{enumerate}[(1)]
+			\item \begin{enumerate}
+				\item 若$Z=z=2k+1(k\in\N)$则有$P(Z=z)=(1-0.6)^k\cdot (1-0.7)^k\cdot 0.6=0.12^k\cdot 0.6$.
+				\item 若$Z=z=2k+2(k\in\N)$则有$P(Z=z)=(1-0.6)^{k+1}\cdot(1-0.7)^k\cdot0.7=0.12^k\cdot 0.28$.
+			\end{enumerate}
+			\item 甲投了$x$次篮说明在前$x-1$轮中两人均未投中, 且第$x$轮中必有一人投中.
+			
+			故$P(X=x)=(1-0.6)^{x-1}\cdot(1-0.7)^{x-1}\cdot (0.6+(1-0.6)\cdot 0.7)=0.12^{x-1}\cdot 0.88$.
+			\item  乙投了$y(y>0)$次篮说明在前$y-1$轮中两人均未投中, 且要么第$y$轮中甲未投中但乙投中, 或者这一轮中两人均未投中但下一轮中甲投中.
+			
+			$P(Y=y)=(1-0.6)^y\cdot (1-0.7)^{y-1}\cdot0.7+(1-0.6)^y\cdot (1-0.7)^y\cdot 0.6=0.12^{y-1}\cdot0.352$.
+			
+			特别地, $P(Y=0)=0.6$.
+		\end{enumerate}
+	\end{solution}
+
+	\section{Problem 5}
+	\begin{solution}
+		\begin{enumerate}[(1)]
+			\item 由归一化条件得$$\int_{-\infty}^{\infty}f(x)\d x=2A\int_{0}^\infty e^{-x}\d x=2A=1$$
+			
+			解得$$A=\frac{1}{2}$$
+			
+			\item 对概率分布函数$F(x)$有
+			\begin{enumerate}
+				\item $x\leq 0$时 $$F(x)=\int_{-\infty}^x f(t)\d t=\frac{1}{2}\int_{-\infty}^x e^t\d t=\frac{e^x}{2}$$
+				\item $x>0$时 $$F(x)=\int_{-\infty}^xf(t)\d t=\frac{1}{2}+\frac{1}{2}\int_{0}^{x}e^{-t}\d t=1-\frac{e^{-x}}{2}$$
+			\end{enumerate}
+		
+			\item $$P(-1\leq X\leq 2)=\int_{-1}^{2} f(x)\d x=F(2)-F(-1)=1-\frac{e+1}{2e^2}$$
+		\end{enumerate}
+	\end{solution}
+
+	\section{Problem 6}
+	
+	\begin{solution}
+		$P(X=k)=\frac{{12\choose 5-k}{3\choose k}}{{15\choose 5}}=\frac{{12\choose 5-k}{3\choose k}}{3003}$.
+		
+		$X$具有如下的分布列:
+		
+		\begin{table}[htbp]
+			\centering
+			\begin{tabular}{ccccccc}
+				$k$      & $0$            & $1$             & $2$            & $3$            & $4$ & $5$ \\
+				$P(X=k)$ & $\frac{24}{91}$ & $\frac{45}{91}$ & $\frac{20}{91}$ & $\frac{2}{91}$ & $0$ & $0$
+		\end{tabular}
+	\end{table}
+		故$E(X)=\sum_{k=0}^5 kP(X=k)=1$.
+	\end{solution}
+
+	\section{Problem 7}
+	\begin{solution}
+		\begin{enumerate}[(1)]
+			\item $$\begin{aligned}
+				E(X)=&\int_{-\infty}^\infty xf(x)\d x \\
+				=& \frac{1}{2}\left(\int_{-\infty}^0 xe^x\d x +\int_0^{\infty} xe^{-x}\d x\right) \\
+				=& \frac{1}{2}\left(-\int_{0}^{\infty}xe^{-x}\d x+\int_0^{\infty} xe^{-x}\d x\right) \\
+				=& 0
+			\end{aligned}$$
+		
+			\item $$\begin{aligned}
+				E(X^2)=&\int_{-\infty}^\infty x^2f(x)\d x \\
+				=& \int_0^\infty x^2e^{-x}\d x \\
+				=& 2
+			\end{aligned} $$
+			故 $$D(X)=E(X^2)-(E(X))^2=2-0=2$$
+		\end{enumerate}
+	\end{solution}
+\end{document}
